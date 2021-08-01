@@ -3,10 +3,15 @@ console.log('Running at full steam!');
 const { text } = require('express');
 const express = require('express');
 const bodyParser = require('body-Parser');
-
-
 const app = express();
-let collectedMath = [];
+
+app.get('/math', (req, res) => {
+    console.log('Ready to send math', mathProblem);
+    console.log('request.route.path is', req.route.path);
+    res.send(mathProblem);
+});
+
+let previousAnswers = [];
 app.use(express.static('./server/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,8 +24,8 @@ app.post('/math', (req, res) => {
     let mathAnswer = [];
     if (mathProblem.operation === "add"){
         let mathAnswer = Number(mathProblem.input1) + Number(mathProblem.input2)
-        console.log('Adding Complete', mathAnswer);
-        return mathAnswer
+        mathProblem.answer = mathAnswer
+        console.log('Adding Complete', mathProblem);
     }
     else if (mathProblem.operation === "subtract"){
         let mathAnswer = Number(mathProblem.input1) - Number(mathProblem.input2)
@@ -43,15 +48,11 @@ app.post('/math', (req, res) => {
         });
         return;
     }
+    previousAnswers.push(mathProblem);
+    console.log(previousAnswers);
     res.sendStatus(201); // 201 Created
-
-    app.get('/math', (req, res) => {
-        console.log('Ready to send math', mathAnswer);
-        console.log('request.route.path is', req.route.path);
-        res.send(mathAnswer);
-    });
-
 });
+
 //Listen for Requests
 const port = 5000;
 app.listen(port, () => {
