@@ -8,7 +8,7 @@ const app = express();
 app.get('/math', (req, res) => {
     console.log('Ready to send math', mathProblem);
     console.log('request.route.path is', req.route.path);
-    res.send(mathProblem);
+    res.send(previousAnswers);
 });
 
 let previousAnswers = [];
@@ -30,17 +30,14 @@ app.post('/math', (req, res) => {
     else if (mathProblem.operation === "subtract"){
         let mathAnswer = Number(mathProblem.input1) - Number(mathProblem.input2)
         console.log('Subtracting Complete', mathAnswer);
-        return mathAnswer
     }
     else if (mathProblem.operation === "multiply") {
         let mathAnswer = Number(mathProblem.input1) * Number(mathProblem.input2)
         console.log('Multiplying Complete', mathAnswer);
-        return mathAnswer
     }
-    else if (mathProblem.operation === "division") {
+    else if (mathProblem.operation === "divide") {
         let mathAnswer = Number(mathProblem.input1) / Number(mathProblem.input2)
         console.log('Dividing Complete', mathAnswer);
-        return mathAnswer
     }
     else if (!mathProblem.input1 || !mathProblem.input2 || !mathProblem.operation) {
         res.status(400).send({

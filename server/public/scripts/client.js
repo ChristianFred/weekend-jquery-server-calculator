@@ -6,6 +6,7 @@ function onReady() {
     $('#subBtn').on('click', subtractObject);
     $('#multBtn').on('click', multiplyObject);
     $('#divBtn').on('click', divideObject);
+    $('#answerBtn').on('click',getAnswer);
 
 }
 
@@ -99,6 +100,7 @@ function divideObject() {
 }
 
 function getAnswer() {
+    console.log('Inside Get Answer');
     $.ajax({
         method: 'GET',
         url: '/math',
