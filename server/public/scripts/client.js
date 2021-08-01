@@ -6,10 +6,7 @@ function onReady() {
     $('#subBtn').on('click', subtractObject);
     $('#multBtn').on('click', multiplyObject);
     $('#divBtn').on('click', divideObject);
-    $('#answerBtn').on('click',getAnswer);
-
 }
-
 function addObject(){
     console.log('inside the adding computer');
     let mathProblem = {
@@ -23,6 +20,7 @@ function addObject(){
         url: '/math',
         data: mathProblem
     }).then((response) => {
+        getAnswer()
     }).catch(error => {
         console.log('POST /math failed', error);
         $('body').append(`
@@ -45,6 +43,7 @@ function subtractObject() {
         url: '/math',
         data: mathProblem
     }).then((response) => {
+        getAnswer()
     }).catch(error => {
         console.log('POST /math failed', error);
         $('body').append(`
@@ -67,6 +66,7 @@ function multiplyObject() {
         url: '/math',
         data: mathProblem
     }).then((response) => {
+        getAnswer()
     }).catch(error => {
         console.log('POST /math failed', error);
         $('body').append(`
@@ -89,6 +89,7 @@ function divideObject() {
         url: '/math',
         data: mathProblem
     }).then((response) => {
+        getAnswer()
     }).catch(error => {
         console.log('POST /math failed', error);
         $('body').append(`
@@ -105,21 +106,17 @@ function getAnswer() {
         method: 'GET',
         url: '/math',
     })
-        //Network request take a LONG time
-        //wait for the request to complete and THEN, run this function
-        //Whatever we pass to res.send()
-        //becomes the 'response argument
         .then((response) => {
             console.log('GET /math response', response)
 
             let priorHistory = $('#history');
-            console.log('quotes list element', priorHistory)
-
+            console.log('Prior History element', priorHistory)
+            priorHistory.empty();
             for (let history of response) {
                 console.log('history is', history)
-                quoteList.append(`
+                priorHistory.append(`
                 <li>
-                    ${mathProblem.input1} ${mathProblem.operation} ${mathProblem.input2} = ${mathProblem.answer}
+                The Answer is ${history.input1} ${history.operation} ${history.input2} = ${history.answer}
                 </li>
               `);
             }
